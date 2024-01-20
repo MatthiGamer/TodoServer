@@ -2,14 +2,24 @@
 {
     public class TodoTask
     {
-        private string name;
+        private string id;
+        private string taskName;
         private string listName;
         private DateTime? dueDate;
+        private bool isImportant;
 
-        public TodoTask(string taskName, string listName, string? dueDate)
+        public TodoTask(string id, string taskName, string listName, string? dueDate, bool isImportant)
         {
-            this.name = taskName;
+            this.id = id;
+            this.taskName = taskName;
             this.listName = listName;
+            this.isImportant = isImportant;
+
+            if (dueDate == null)
+            {
+                this.dueDate = null;
+                return;
+            }
 
             // Parse Date
             bool isSuccess = DateTime.TryParse(dueDate, out DateTime temp);
