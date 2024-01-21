@@ -7,13 +7,15 @@
         private string listName;
         private DateTime? dueDate;
         private bool isImportant;
+        private bool isDone;
 
-        public TodoTask(string id, string taskName, string listName, string? dueDate, bool isImportant)
+        public TodoTask(string id, string taskName, string listName, string? dueDate, bool isImportant, bool isDone)
         {
             this.id = id;
             this.taskName = taskName;
             this.listName = listName;
             this.isImportant = isImportant;
+            this.isDone = isDone;
 
             if (dueDate == null)
             {
