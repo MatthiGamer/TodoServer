@@ -32,7 +32,7 @@
             }
 
             this.dueDate = null;
-            Console.WriteLine("DateConversionError", this);
+            Console.WriteLine($"[Warning] {this} DateConversionError!");
         }
     }
 }
