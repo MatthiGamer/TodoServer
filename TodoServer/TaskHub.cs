@@ -17,9 +17,15 @@ namespace TodoApplication
             if (taskName == null || listName == null) return;
 
             TodoTask task = new TodoTask(id, taskName, listName, dueDateString, isImportant, isDone);
+            TaskManager.SaveTask(task);
 
             Console.WriteLine("Task saved.");
             await SendMessage(Context.User!.ToString()!, "Task saved.");
+        }
+
+        public async Task<TodoTask[]> SendTasks()
+        {
+            return TaskManager.GetTasks();
         }
     }
 }
