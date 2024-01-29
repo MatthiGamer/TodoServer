@@ -10,7 +10,7 @@ namespace TodoApplication
             await Clients.All.SendAsync("ReceiveMessage", user, message);
         }
 
-        public async Task ReceiveTask(string id, string taskName, string listName, string? dueDateString, bool isImportant, bool isDone)
+        public async Task SaveTask(string id, string taskName, string listName, string? dueDateString, bool isImportant, bool isDone)
         {
             Console.WriteLine("Task received");
 
@@ -23,7 +23,7 @@ namespace TodoApplication
             await SendMessage(Context.User!.ToString()!, "Task saved.");
         }
 
-        public async Task<TodoTask[]> SendTasks()
+        public async Task<TodoTask[]> GetTasks()
         {
             return TaskManager.GetTasks();
         }
