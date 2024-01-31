@@ -1,38 +1,23 @@
 ﻿namespace TodoServer
 {
+    [Serializable]
     public class TodoTask
     {
-        private string id;
+        private string taskID;
         private string taskName;
         private string listName;
-        private DateTime? dueDate;
+        private TodoDate? dueDate;
         private bool isImportant;
         private bool isDone;
 
-        public TodoTask(string id, string taskName, string listName, string? dueDate, bool isImportant, bool isDone)
+        public TodoTask(string taskID, string taskName, string listName, TodoDate? dueDate, bool isImportant, bool isDone)
         {
-            this.id = id;
+            this.taskID = taskID;
             this.taskName = taskName;
             this.listName = listName;
+            this.dueDate = dueDate;
             this.isImportant = isImportant;
             this.isDone = isDone;
-
-            if (dueDate == null)
-            {
-                this.dueDate = null;
-                return;
-            }
-
-            // Parse Date
-            bool isSuccess = DateTime.TryParse(dueDate, out DateTime temp);
-            if (isSuccess)
-            {
-                this.dueDate = temp;
-                return;
-            }
-
-            this.dueDate = null;
-            Console.WriteLine($"[Warning] {this} DateConversionError!");
         }
     }
 }

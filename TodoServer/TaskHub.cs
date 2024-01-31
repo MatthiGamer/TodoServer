@@ -10,13 +10,13 @@ namespace TodoApplication
             await Clients.All.SendAsync("ReceiveMessage", user, message);
         }
 
-        public async Task SaveTask(string id, string taskName, string listName, string? dueDateString, bool isImportant, bool isDone)
+        public async Task SaveTask(string id, string taskName, string listName, TodoDate? dueDate, bool isImportant, bool isDone)
         {
             Console.WriteLine("Task received");
 
             if (taskName == null || listName == null) return;
 
-            TodoTask task = new TodoTask(id, taskName, listName, dueDateString, isImportant, isDone);
+            TodoTask task = new TodoTask(id, taskName, listName, dueDate, isImportant, isDone);
             TaskManager.SaveTask(task);
 
             Console.WriteLine("Task saved.");
