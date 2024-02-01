@@ -1,4 +1,6 @@
-﻿namespace TodoServer
+﻿using Newtonsoft.Json;
+
+namespace TodoServer
 {
     public class TaskManager
     {
@@ -20,6 +22,9 @@
             tasks.Add(task);
         }
 
-        public static TodoTask[] GetTasks() => tasks.ToArray();
+        public static string GetTasks()
+        {
+            return JsonConvert.SerializeObject(tasks);
+        }
     }
 }

@@ -23,7 +23,7 @@ namespace TodoApplication
             await SendMessage(Context.User!.ToString()!, "Task saved.");
         }
 
-        public async Task<TodoTask[]> GetTasks()
+        public async Task<string> GetTasks()
         {
             return TaskManager.GetTasks();
         }
