@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json;
 using TodoServer;
 
 namespace TodoApplication
@@ -21,6 +22,7 @@ namespace TodoApplication
 
             Console.WriteLine("Task saved.");
             await SendMessage(Context.User!.ToString()!, "Task saved.");
+            await Clients.All.SendAsync("AddTask", JsonConvert.SerializeObject(task));
         }
 
         public async Task<string> GetTasks()
