@@ -26,5 +26,15 @@ namespace TodoServer
         {
             return JsonConvert.SerializeObject(tasks);
         }
+
+        public static TodoTask? GetTaskById(string id)
+        {
+            foreach (TodoTask task in tasks)
+            {
+                if (task.taskID == id) return task;
+            }
+
+            return null;
+        }
     }
 }

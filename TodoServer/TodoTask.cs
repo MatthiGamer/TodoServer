@@ -4,11 +4,11 @@
     public class TodoTask
     {
         public string taskID { get; }
-        public string taskName { get; }
-        public string taskList { get; }
-        public TodoDate? dueDate { get; }
-        public bool isImportant { get; }
-        public bool isDone { get; }
+        public string taskName { get; set; }
+        public string taskList { get; set; }
+        public TodoDate? dueDate { get; set; }
+        public bool isImportant { get; set; }
+        public bool isDone { get; set; }
 
         public TodoTask(string taskID, string taskName, string listName, TodoDate? dueDate, bool isImportant, bool isDone)
         {

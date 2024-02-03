@@ -13,21 +13,68 @@ namespace TodoApplication
 
         public async Task SaveTask(string id, string taskName, string listName, TodoDate? dueDate, bool isImportant, bool isDone)
         {
-            Console.WriteLine("Task received");
+            Console.WriteLine("New Task received.");
 
             if (taskName == null || listName == null) return;
 
-            TodoTask task = new TodoTask(id, taskName, listName, dueDate, isImportant, isDone);
-            TaskManager.SaveTask(task);
+            TodoTask? newTask = TaskManager.GetTaskById(id);
+            if (newTask != null)
+            {
+                Console.WriteLine("Task already exists.");
+                return;
+            }
 
-            Console.WriteLine("Task saved.");
-            await SendMessage(Context.User!.ToString()!, "Task saved.");
-            await Clients.All.SendAsync("AddTask", JsonConvert.SerializeObject(task));
+            newTask = new TodoTask(id, taskName, listName, dueDate, isImportant, isDone);
+            TaskManager.SaveTask(newTask);
+
+            const string TASK_SAVED = "Task saved.";
+            Console.WriteLine(TASK_SAVED);
+            await SendMessage(Context.User!.ToString()!, TASK_SAVED);
+
+            await Clients.All.SendAsync("AddTask", JsonConvert.SerializeObject(newTask));
         }
 
         public async Task<string> GetTasks()
         {
             return TaskManager.GetTasks();
+        }
+
+        public async Task SaveTaskImportance(string id, bool isImportant)
+        {
+            TodoTask? task = TaskManager.GetTaskById(id);
+
+            if (task == null)
+            {
+                Console.WriteLine("ServerWarning: Couldn't find task by id. Importance won't be changed.");
+                return;
+            }
+
+            task.isImportant = isImportant;
+
+            const string TASK_IMPORTANCE_CHANGED = "Task importance changed.";
+            Console.WriteLine(TASK_IMPORTANCE_CHANGED);
+            await SendMessage(Context.User!.ToString()!, TASK_IMPORTANCE_CHANGED);
+
+            await Clients.All.SendAsync("ChangeTaskImportance", task.taskID, isImportant);
+        }
+
+        public async Task SaveTaskDone(string id, bool isDone)
+        {
+            TodoTask? task = TaskManager.GetTaskById(id);
+
+            if (task == null)
+            {
+                Console.WriteLine("ServerWarning: Couldn't find task by id. Done status won't be changed.");
+                return;
+            }
+
+            task.isDone = isDone;
+
+            const string TASK_DONE_STATUS_CHANGED = "Task done status changed.";
+            Console.WriteLine(TASK_DONE_STATUS_CHANGED);
+            await SendMessage(Context.User!.ToString()!, TASK_DONE_STATUS_CHANGED);
+
+            await Clients.All.SendAsync("ChangeTaskDone", task.taskID, isDone);
         }
     }
 }
