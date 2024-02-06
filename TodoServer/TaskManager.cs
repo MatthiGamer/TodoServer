@@ -22,10 +22,7 @@ namespace TodoServer
             tasks.Add(task);
         }
 
-        public static string GetTasks()
-        {
-            return JsonConvert.SerializeObject(tasks);
-        }
+        public static string GetTasks() => JsonConvert.SerializeObject(tasks);
 
         public static TodoTask? GetTaskById(string id)
         {

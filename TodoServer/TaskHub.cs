@@ -11,7 +11,7 @@ namespace TodoApplication
             await Clients.All.SendAsync("ReceiveMessage", user, message);
         }
 
-        public async Task SaveTask(string id, string taskName, string listName, TodoDate? dueDate, bool isImportant, bool isDone)
+        public async Task SaveTask(string id, string taskName, string listName, string dueDateString, bool isImportant, bool isDone)
         {
             Console.WriteLine("New Task received.");
 
@@ -24,10 +24,11 @@ namespace TodoApplication
                 return;
             }
 
+            DateType? dueDate = JsonConvert.DeserializeObject<DateType?>(dueDateString);
             newTask = new TodoTask(id, taskName, listName, dueDate, isImportant, isDone);
             TaskManager.SaveTask(newTask);
 
-            const string TASK_SAVED = "Task saved.";
+            const string TASK_SAVED = "Task successfully saved.";
             Console.WriteLine(TASK_SAVED);
             await SendMessage(Context.User!.ToString()!, TASK_SAVED);
 
