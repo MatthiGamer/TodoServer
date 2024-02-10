@@ -7,7 +7,7 @@ namespace TodoServer
         private static TaskManager? instance = null;
         private static List<TodoTask> tasks = new List<TodoTask>();
 
-        public static TaskManager Instance ()
+        public static TaskManager GetInstance()
         {
             if (instance == null)
             {
@@ -17,14 +17,14 @@ namespace TodoServer
             return instance;
         }
 
-        public static void SaveTask(TodoTask task)
+        public void SaveTask(TodoTask task)
         {
             tasks.Add(task);
         }
 
-        public static string GetTasks() => JsonConvert.SerializeObject(tasks);
+        public string GetTasks() => JsonConvert.SerializeObject(tasks);
 
-        public static TodoTask? GetTaskById(string id)
+        public TodoTask? GetTaskById(string id)
         {
             foreach (TodoTask task in tasks)
             {

@@ -17,7 +17,7 @@ namespace TodoApplication
 
             if (taskName == null || listName == null) return;
 
-            TodoTask? newTask = TaskManager.GetTaskById(id);
+            TodoTask? newTask = TaskManager.GetInstance().GetTaskById(id);
             if (newTask != null)
             {
                 Console.WriteLine("Task already exists.");
@@ -26,7 +26,7 @@ namespace TodoApplication
 
             DateType? dueDate = JsonConvert.DeserializeObject<DateType?>(dueDateString);
             newTask = new TodoTask(id, taskName, listName, dueDate, isImportant, isDone);
-            TaskManager.SaveTask(newTask);
+            TaskManager.GetInstance().SaveTask(newTask);
 
             const string TASK_SAVED = "Task successfully saved.";
             Console.WriteLine(TASK_SAVED);
@@ -37,12 +37,12 @@ namespace TodoApplication
 
         public async Task<string> GetTasks()
         {
-            return TaskManager.GetTasks();
+            return TaskManager.GetInstance().GetTasks();
         }
 
         public async Task SaveTaskImportance(string id, bool isImportant)
         {
-            TodoTask? task = TaskManager.GetTaskById(id);
+            TodoTask? task = TaskManager.GetInstance().GetTaskById(id);
 
             if (task == null)
             {
@@ -61,7 +61,7 @@ namespace TodoApplication
 
         public async Task SaveTaskDone(string id, bool isDone)
         {
-            TodoTask? task = TaskManager.GetTaskById(id);
+            TodoTask? task = TaskManager.GetInstance().GetTaskById(id);
 
             if (task == null)
             {
