@@ -7,6 +7,8 @@ namespace TodoServer
         private static TaskManager? instance = null;
         private static List<TodoTask> tasks = new List<TodoTask>();
 
+        private TaskManager() { }
+
         public static TaskManager GetInstance()
         {
             if (instance == null)
