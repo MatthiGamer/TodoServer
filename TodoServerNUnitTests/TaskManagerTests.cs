@@ -46,7 +46,8 @@ namespace TodoServerNUnitTests
 
             string savedTasks = TaskManager.GetInstance().GetTasks();
             TodoTask[]? tasks = JsonConvert.DeserializeObject<TodoTask[]>(savedTasks);
-            if (tasks == null) Assert.Fail("Either there are no tasks saved or the deserialization failed.");
+            if (tasks == null) Assert.Fail("The deserialization failed.");
+            if (tasks!.Length < 1) Assert.Fail("There are no tasks saved.");
 
             TodoTask? savedTask = tasks[0];
             if (savedTask == null) Assert.Fail("The saved task ist null.");
