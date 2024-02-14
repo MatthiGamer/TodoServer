@@ -5,6 +5,20 @@ namespace TodoServerNUnitTests
 {
     public class TaskManagerTests
     {
+        // String constants
+        private const string TEST_TASK_ID = "ID";
+        private const string TEST_TASK_NAME = "Task";
+        private const string TEST_TASK_LIST = "Todo";
+
+        // Date constants
+        private const int TEST_DUE_DATE_DAY = 1;
+        private const int TEST_DUE_DATE_MONTH = 1;
+        private const int TEST_DUE_DATE_YEAR = 2024;
+
+        // Boolean constants
+        private const bool TEST_IS_IMPORTANT = false;
+        private const bool TEST_IS_DONE = false;
+
         [SetUp]
         public void Setup()
         {
@@ -31,7 +45,9 @@ namespace TodoServerNUnitTests
             SaveTestTask();
 
             string savedTasks = TaskManager.GetInstance().GetTasks();
-            StringAssert.AreEqualIgnoringCase("[{\"taskID\":\"ID\",\"taskName\":\"Task\",\"taskList\":\"Todo\",\"dueDate\":null,\"isImportant\":false,\"isDone\":false}]", savedTasks);
+            StringAssert.AreEqualIgnoringCase(
+                $@"[{{taskID:ID,taskName:Task,taskList:Todo,dueDate:{{day:{TEST_DUE_DATE_DAY},month:{TEST_DUE_DATE_MONTH},year:{TEST_DUE_DATE_YEAR}}},isImportant:false,isDone:false}}]",
+                savedTasks);
         }
 
         [Test]
@@ -43,28 +59,30 @@ namespace TodoServerNUnitTests
             TodoTask[]? tasks = JsonConvert.DeserializeObject<TodoTask[]>(savedTasks);
             TodoTask newTask = tasks[0];
 
-            Assert.That(newTask.taskID, Is.EqualTo("ID"));
-            Assert.That(newTask.taskName, Is.EqualTo("Task"));
-            Assert.That(newTask.taskList, Is.EqualTo("Todo"));
-            Assert.That(newTask.dueDate, Is.EqualTo(null));
-            Assert.That(newTask.isImportant, Is.EqualTo(false));
-            Assert.That(newTask.isDone, Is.EqualTo(false));
+            Assert.That(newTask.taskID, Is.EqualTo(TEST_TASK_ID));
+            Assert.That(newTask.taskName, Is.EqualTo(TEST_TASK_NAME));
+            Assert.That(newTask.taskList, Is.EqualTo(TEST_TASK_LIST));
+            Assert.That(newTask.dueDate, Is.EqualTo(GetTestDateType()));
+            Assert.That(newTask.isImportant, Is.EqualTo(TEST_IS_IMPORTANT));
+            Assert.That(newTask.isDone, Is.EqualTo(TEST_IS_DONE));
         }
 
-        private void SaveTestTask()
+        private static void SaveTestTask()
         {
-            if (TaskManager.GetInstance().GetTaskById("ID") != null) return;
+            if (TaskManager.GetInstance().GetTaskById(TEST_TASK_ID) != null) return;
 
             TodoTask task = new TodoTask(
-                "ID",
-                "Task",
-                "Todo",
-                null,
-                false,
-                false
+                TEST_TASK_ID,
+                TEST_TASK_NAME,
+                TEST_TASK_LIST,
+                GetTestDateType(),
+                TEST_IS_IMPORTANT,
+                TEST_IS_DONE
             );
 
             TaskManager.GetInstance().SaveTask(task);
         }
+
+        private static DateType GetTestDateType() => new DateType() { day = TEST_DUE_DATE_DAY, month = TEST_DUE_DATE_MONTH, year = TEST_DUE_DATE_YEAR };
     }
 }
