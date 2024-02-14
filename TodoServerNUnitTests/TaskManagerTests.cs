@@ -40,6 +40,24 @@ namespace TodoServerNUnitTests
         }
 
         [Test]
+        public void TaskManagerGetTaskByIDTest()
+        {
+            SaveTestTask();
+
+            string savedTasks = TaskManager.GetInstance().GetTasks();
+            TodoTask[]? tasks = JsonConvert.DeserializeObject<TodoTask[]>(savedTasks);
+            if (tasks == null) Assert.Fail("Either there are no tasks saved or the deserialization failed.");
+
+            TodoTask? savedTask = tasks[0];
+            if (savedTask == null) Assert.Fail("The saved task ist null.");
+
+            TodoTask? task = TaskManager.GetInstance().GetTaskById(TEST_TASK_ID);
+            if (task == null) Assert.Fail("Task not found by GetTaskById().");
+
+            Assert.That(task!.taskID, Is.EqualTo(savedTask!.taskID));
+        }
+
+        [Test]
         public void TaskManagerGetTasksToJSONTest()
         {
             SaveTestTask();
