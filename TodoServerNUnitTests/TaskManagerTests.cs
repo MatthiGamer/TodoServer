@@ -19,13 +19,6 @@ namespace TodoServerNUnitTests
         private const bool TEST_IS_IMPORTANT = false;
         private const bool TEST_IS_DONE = false;
 
-        [SetUp]
-        public void Setup()
-        {
-            // Setup before every Test
-            
-        }
-
         [Test]
         public void TaskManagerInstanceTest()
         {
