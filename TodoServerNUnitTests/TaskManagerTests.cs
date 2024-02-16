@@ -36,14 +36,7 @@ namespace TodoServerNUnitTests
         public void TaskManagerGetTaskByIDTest()
         {
             SaveTestTask();
-
-            string savedTasks = TaskManager.GetInstance().GetTasks();
-            TodoTask[]? tasks = JsonConvert.DeserializeObject<TodoTask[]>(savedTasks);
-            if (tasks == null) Assert.Fail("The deserialization failed.");
-            if (tasks!.Length < 1) Assert.Fail("There are no tasks saved.");
-
-            TodoTask? savedTask = tasks[0];
-            if (savedTask == null) Assert.Fail("The saved task ist null.");
+            TodoTask savedTask = GetSavedTask();
 
             TodoTask? task = TaskManager.GetInstance().GetTaskById(TEST_TASK_ID);
             if (task == null) Assert.Fail("Task not found by GetTaskById().");
@@ -66,17 +59,14 @@ namespace TodoServerNUnitTests
         public void TaskManagerGetTasksFromJSONTest()
         {
             SaveTestTask();
+            TodoTask savedTask = GetSavedTask();
 
-            string savedTasks = TaskManager.GetInstance().GetTasks();
-            TodoTask[]? tasks = JsonConvert.DeserializeObject<TodoTask[]>(savedTasks);
-            TodoTask newTask = tasks[0];
-
-            Assert.That(newTask.taskID, Is.EqualTo(TEST_TASK_ID));
-            Assert.That(newTask.taskName, Is.EqualTo(TEST_TASK_NAME));
-            Assert.That(newTask.taskList, Is.EqualTo(TEST_TASK_LIST));
-            Assert.That(newTask.dueDate, Is.EqualTo(GetTestDateType()));
-            Assert.That(newTask.isImportant, Is.EqualTo(TEST_IS_IMPORTANT));
-            Assert.That(newTask.isDone, Is.EqualTo(TEST_IS_DONE));
+            Assert.That(savedTask.taskID, Is.EqualTo(TEST_TASK_ID));
+            Assert.That(savedTask.taskName, Is.EqualTo(TEST_TASK_NAME));
+            Assert.That(savedTask.taskList, Is.EqualTo(TEST_TASK_LIST));
+            Assert.That(savedTask.dueDate, Is.EqualTo(GetTestDateType()));
+            Assert.That(savedTask.isImportant, Is.EqualTo(TEST_IS_IMPORTANT));
+            Assert.That(savedTask.isDone, Is.EqualTo(TEST_IS_DONE));
         }
 
         private static void SaveTestTask()
@@ -93,6 +83,18 @@ namespace TodoServerNUnitTests
             );
 
             TaskManager.GetInstance().SaveTask(task);
+        }
+
+        private TodoTask GetSavedTask()
+        {
+            string savedTasks = TaskManager.GetInstance().GetTasks();
+            TodoTask[]? tasks = JsonConvert.DeserializeObject<TodoTask[]>(savedTasks);
+
+            if (tasks == null) Assert.Fail("The deserialization failed.");
+            if (tasks!.Length < 1) Assert.Fail("There are no tasks saved.");
+            if (tasks[0] == null) Assert.Fail("The saved task ist null.");
+
+            return tasks[0];
         }
 
         private static DateType GetTestDateType() => new DateType() { day = TEST_DUE_DATE_DAY, month = TEST_DUE_DATE_MONTH, year = TEST_DUE_DATE_YEAR };
