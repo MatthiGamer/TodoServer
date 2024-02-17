@@ -5,6 +5,8 @@ namespace TodoServerNUnitTests
 {
     public class TaskManagerTests
     {
+        private const string TEST_SAVE_TASK_ID = "ID_Save";
+
         // String constants
         private const string TEST_TASK_ID = "ID";
         private const string TEST_TASK_NAME = "Task";
@@ -33,8 +35,24 @@ namespace TodoServerNUnitTests
         }
 
         [Test]
+        public void TaskManagerSaveTaskTest()
+        {
+            TodoTask task = new TodoTask(
+                TEST_SAVE_TASK_ID,
+                TEST_TASK_NAME,
+                TEST_TASK_LIST,
+                GetTestDateType(),
+                TEST_IS_IMPORTANT,
+                TEST_IS_DONE
+            );
+
+            Assert.DoesNotThrow(() => TaskManager.GetInstance().SaveTask(task));
+        }
+
+        [Test]
         public void TaskManagerGetTaskByIDTest()
         {
+            Assert.DoesNotThrow(SaveTestTask);
             SaveTestTask();
             TodoTask savedTask = GetSavedTask();
 
@@ -47,6 +65,7 @@ namespace TodoServerNUnitTests
         [Test]
         public void TaskManagerGetTasksToJSONTest()
         {
+            Assert.DoesNotThrow(SaveTestTask);
             SaveTestTask();
 
             string savedTasks = TaskManager.GetInstance().GetTasks();
@@ -58,6 +77,7 @@ namespace TodoServerNUnitTests
         [Test]
         public void TaskManagerGetTasksFromJSONTest()
         {
+            Assert.DoesNotThrow(SaveTestTask);
             SaveTestTask();
             TodoTask savedTask = GetSavedTask();
 
@@ -92,9 +112,12 @@ namespace TodoServerNUnitTests
 
             if (tasks == null) Assert.Fail("The deserialization failed.");
             if (tasks!.Length < 1) Assert.Fail("There are no tasks saved.");
-            if (tasks[0] == null) Assert.Fail("The saved task ist null.");
 
-            return tasks[0];
+            TodoTask? savedTask = TaskManager.GetInstance().GetTaskById(TEST_TASK_ID);
+
+            if (savedTask == null) Assert.Fail("The saved task ist null.");
+
+            return savedTask!;
         }
 
         private static DateType GetTestDateType() => new DateType() { day = TEST_DUE_DATE_DAY, month = TEST_DUE_DATE_MONTH, year = TEST_DUE_DATE_YEAR };
