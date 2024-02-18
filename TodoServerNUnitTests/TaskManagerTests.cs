@@ -47,6 +47,20 @@ namespace TodoServerNUnitTests
             );
 
             Assert.DoesNotThrow(() => TaskManager.GetInstance().SaveTask(task));
+            Assert.DoesNotThrow(() => TaskManager.GetInstance().DeleteTask(task.taskID));
+        }
+
+        [Test]
+        public void TaskManagerDeleteTaskTest()
+        {
+            Assert.DoesNotThrow(SaveTestTask);
+            SaveTestTask();
+            TodoTask savedTask = GetSavedTask();
+
+            TaskManager.GetInstance().DeleteTask(savedTask.taskID);
+
+            string savedTasks = TaskManager.GetInstance().GetTasks();
+            StringAssert.AreEqualIgnoringCase("[]", savedTasks);
         }
 
         [Test]
