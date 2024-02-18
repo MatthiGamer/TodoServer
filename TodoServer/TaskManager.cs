@@ -24,6 +24,19 @@ namespace TodoServer
             tasks.Add(task);
         }
 
+        public void DeleteTask(string taskID)
+        {
+            TodoTask? task = GetTaskById(taskID);
+
+            if (task == null)
+            {
+                Console.WriteLine($"TaskManagerWarning: Trying to delete task with id \"{taskID}\" but task couldn't be found.");
+                return;
+            }
+
+            tasks.Remove(task);
+        }
+
         public string GetTasks() => JsonConvert.SerializeObject(tasks);
 
         public TodoTask? GetTaskById(string id)
