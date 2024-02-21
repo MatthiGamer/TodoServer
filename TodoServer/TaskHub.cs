@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
+using System.Runtime.CompilerServices;
 using TodoServer;
 
 namespace TodoApplication
@@ -76,6 +77,25 @@ namespace TodoApplication
             await SendMessage(Context.User!.ToString()!, TASK_DONE_STATUS_CHANGED);
 
             await Clients.All.SendAsync("ChangeTaskDone", task.taskID, isDone);
+        }
+
+        public async Task DeleteTask(string id)
+        {
+            TodoTask? task = TaskManager.GetInstance().GetTaskById(id);
+
+            if (task == null)
+            {
+                Console.WriteLine("ServerWarning: Couldn't find task by id. Task won't be deleted.");
+                return;
+            }
+
+            TaskManager.GetInstance().DeleteTask(task.taskID);
+
+            const string TASK_DELETED = "Task deleted.";
+            Console.WriteLine(TASK_DELETED);
+            await SendMessage(Context.User!.ToString()!, TASK_DELETED);
+
+            await Clients.All.SendAsync("DeleteTask", task.taskID);
         }
     }
 }
