@@ -5,8 +5,6 @@ namespace TodoServerNUnitTests
 {
     public class TaskManagerTests
     {
-        
-
         [SetUp]
         public void Setup()
         {

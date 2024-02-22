@@ -4,6 +4,8 @@ namespace TodoApplication
 {
     public class Program
     {
+        private const string CORS_POLICY_NAME = "CorsPolicy";
+
         public static void Main(string[] args)
         {
             // Application Builder
@@ -23,7 +25,7 @@ namespace TodoApplication
 
             services.AddCors(options =>
             {
-                options.AddPolicy("CorsPolicy",
+                options.AddPolicy(CORS_POLICY_NAME,
                     builder => builder
                     .WithOrigins("http://localhost:3000")
                     .AllowAnyMethod()
@@ -34,7 +36,7 @@ namespace TodoApplication
 
         private static void ConfigureApplication(WebApplication application)
         {
-            application.UseCors("CorsPolicy");
+            application.UseCors(CORS_POLICY_NAME);
             application.UseRouting();
 
             application.MapHub<TaskHub>("/Tasks", options =>
