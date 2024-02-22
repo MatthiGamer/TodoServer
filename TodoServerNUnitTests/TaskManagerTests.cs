@@ -53,7 +53,7 @@ namespace TodoServerNUnitTests
         {
             string savedTasks = TaskManager.GetInstance().GetTasks();
             StringAssert.AreEqualIgnoringCase(
-                $@"[{{""taskID"":""ID"",""taskName"":""Task"",""taskList"":""Todo"",""dueDate"":{{""day"":{TestConstants.TEST_DUE_DATE_DAY},""month"":{TestConstants.TEST_DUE_DATE_MONTH},""year"":{TestConstants.TEST_DUE_DATE_YEAR}}},""isImportant"":false,""isDone"":false}}]",
+                $@"[{{""taskID"":""ID"",""taskName"":""Task"",""listName"":""Todo"",""dueDate"":{{""day"":{TestConstants.TEST_DUE_DATE_DAY},""month"":{TestConstants.TEST_DUE_DATE_MONTH},""year"":{TestConstants.TEST_DUE_DATE_YEAR}}},""isImportant"":false,""isDone"":false}}]",
                 savedTasks);
         }
 
