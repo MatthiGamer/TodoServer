@@ -16,6 +16,7 @@ namespace TodoApplication
             WebApplication application = builder.Build();
             ConfigureApplication(application);
 
+            // Start server
             application.Run();
         }
 

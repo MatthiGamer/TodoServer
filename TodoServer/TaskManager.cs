@@ -4,9 +4,11 @@ namespace TodoServer
 {
     public class TaskManager
     {
+        // Singleton instance
         private static TaskManager? instance = null;
         private static List<TodoTask> tasks = new List<TodoTask>();
 
+        // Hide constructor
         private TaskManager() { }
 
         public static TaskManager GetInstance()
@@ -37,13 +39,17 @@ namespace TodoServer
             tasks.Remove(task);
         }
 
+        /// <summary>
+        /// Method for getting all saved tasks as JSON string
+        /// </summary>
+        /// <returns>Returns all saved tasks as JSON string</returns>
         public string GetTasks() => JsonConvert.SerializeObject(tasks);
 
-        public TodoTask? GetTaskById(string id)
+        public TodoTask? GetTaskById(string taskID)
         {
             foreach (TodoTask task in tasks)
             {
-                if (task.taskID == id) return task;
+                if (task.taskID == taskID) return task;
             }
 
             return null;
