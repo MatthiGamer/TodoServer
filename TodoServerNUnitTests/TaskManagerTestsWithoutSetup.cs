@@ -7,7 +7,7 @@ namespace TodoServerNUnitTests
         [Test]
         public void TaskManagerInstanceTest()
         {
-            Assert.IsNotNull(TaskManager.GetInstance());
+            Assert.That(TaskManager.GetInstance(), Is.Not.Null);
         }
 
         [Test]

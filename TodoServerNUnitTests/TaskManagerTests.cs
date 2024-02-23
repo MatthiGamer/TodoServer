@@ -34,7 +34,7 @@ namespace TodoServerNUnitTests
             TaskManager.GetInstance().DeleteTask(savedTask.taskID);
 
             string savedTasks = TaskManager.GetInstance().GetTasks();
-            StringAssert.AreEqualIgnoringCase("[]", savedTasks);
+            Assert.That(savedTasks, Is.EqualTo("[]"));
         }
 
         [Test]
@@ -52,9 +52,10 @@ namespace TodoServerNUnitTests
         public void TaskManagerGetTasksToJSONTest()
         {
             string savedTasks = TaskManager.GetInstance().GetTasks();
-            StringAssert.AreEqualIgnoringCase(
-                $@"[{{""taskID"":""ID"",""taskName"":""Task"",""listName"":""Todo"",""dueDate"":{{""day"":{TestConstants.TEST_DUE_DATE_DAY},""month"":{TestConstants.TEST_DUE_DATE_MONTH},""year"":{TestConstants.TEST_DUE_DATE_YEAR}}},""isImportant"":false,""isDone"":false}}]",
-                savedTasks);
+            Assert.That(savedTasks, Is.EqualTo(
+                $@"[{{""taskID"":""ID"",""taskName"":""Task"",""listName"":""Todo"",""dueDate"":{{""day"":{TestConstants.TEST_DUE_DATE_DAY},""month"":{TestConstants.TEST_DUE_DATE_MONTH},""year"":{TestConstants.TEST_DUE_DATE_YEAR}}},""isImportant"":false,""isDone"":false}}]"
+                )
+            );
         }
 
         [Test]
