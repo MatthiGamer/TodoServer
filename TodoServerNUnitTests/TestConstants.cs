@@ -13,7 +13,9 @@ namespace TodoServerNUnitTests
 
         // Date constants
         public const int TEST_DUE_DATE_DAY = 1;
+        public const int TEST_DUE_DATE_DAY_TWO_DIGITS = 24;
         public const int TEST_DUE_DATE_MONTH = 1;
+        public const int TEST_DUE_DATE_MONTH_TWO_DIGITS = 12;
         public const int TEST_DUE_DATE_YEAR = 2024;
 
         // Boolean constants
