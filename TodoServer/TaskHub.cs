@@ -27,14 +27,14 @@ namespace TodoApplication
         {
             // TODO: Send Task as JSON string and deserialize it here
 
-            Console.WriteLine("New Task received.");
+            Logging.Log("New Task received.");
 
             if (taskName == null || listName == null) return;
 
             TodoTask? newTask = TaskManager.GetInstance().GetTaskById(taskID);
             if (newTask != null)
             {
-                Console.WriteLine("Task already exists.");
+                Logging.Log("Task already exists.");
                 return;
             }
 
@@ -43,6 +43,9 @@ namespace TodoApplication
             TaskManager.GetInstance().SaveTask(newTask);
 
             // TODO: Log saving
+            Logging.Log($"Task saved. => {{ ID: {newTask.taskID}, Name: {newTask.taskName}, List: {newTask.listName}, " +
+                                 $"Due to: {(newTask.dueDate != null ? newTask.dueDate : "End of time")}, isImportant: {newTask.isImportant}, " +
+                                 $"isDone: {newTask.isDone}}}");
             // TODO: Call notification method on client (not implemented yet)
 
             await Clients.All.SendAsync("AddTask", JsonConvert.SerializeObject(newTask));
@@ -63,7 +66,7 @@ namespace TodoApplication
 
             if (task == null)
             {
-                Console.WriteLine("ServerWarning: Couldn't find task by id. Importance won't be changed.");
+                Logging.LogWarning("ServerWarning: Couldn't find task by id. Importance won't be changed.");
                 return;
             }
 
@@ -84,7 +87,7 @@ namespace TodoApplication
 
             if (task == null)
             {
-                Console.WriteLine("ServerWarning: Couldn't find task by id. Done status won't be changed.");
+                Logging.LogWarning("ServerWarning: Couldn't find task by id. Done status won't be changed.");
                 return;
             }
 
@@ -105,7 +108,7 @@ namespace TodoApplication
 
             if (task == null)
             {
-                Console.WriteLine("ServerWarning: Couldn't find task by id. Task won't be deleted.");
+                Logging.LogWarning("ServerWarning: Couldn't find task by id. Task won't be deleted.");
                 return;
             }
 
