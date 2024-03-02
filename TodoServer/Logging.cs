@@ -13,9 +13,14 @@
 
         public static void LogWarning(string warningMessage)
         {
+            LogWarning("Warning", warningMessage);
+        }
+
+        public static void LogWarning(string warningName, string warningMessage)
+        {
             ConsoleColor defaultBackgroundColor = Console.BackgroundColor;
             ChangeConsoleColor(ConsoleColor.Black, warningColor);
-            Console.Write("[Warning]");
+            Console.Write($"[{warningName}]");
             ChangeConsoleColor(warningColor, defaultBackgroundColor);
             Console.WriteLine($" {warningMessage}");
             Console.ResetColor();
@@ -23,9 +28,14 @@
 
         public static void LogError(string errorMessage)
         {
+            LogError("Error", errorMessage);
+        }
+
+        public static void LogError(string errorName, string errorMessage)
+        {
             ConsoleColor defaultBackgroundColor = Console.BackgroundColor;
             ChangeConsoleColor(ConsoleColor.Black, errorColor);
-            Console.Write("[Error]");
+            Console.Write($"[{errorName}]");
             ChangeConsoleColor(errorColor, defaultBackgroundColor);
             Console.WriteLine($" {errorMessage}");
             Console.ResetColor();
