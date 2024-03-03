@@ -19,5 +19,12 @@
             this.isImportant = isImportant;
             this.isDone = isDone;
         }
+
+        public override string ToString()
+        {
+            return $"{{ID: {this.taskID}, Name: {this.taskName}, List: {this.listName}, " +
+                   $"Due to: {(this.dueDate != null ? this.dueDate : "End of time")}, isImportant: {this.isImportant}, " +
+                   $"isDone: {this.isDone}}}";
+        }
     }
 }

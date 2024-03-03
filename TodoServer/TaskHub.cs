@@ -43,9 +43,7 @@ namespace TodoApplication
             TaskManager.GetInstance().SaveTask(newTask);
 
             // TODO: Log saving
-            Logging.Log($"Task saved. => {{ ID: {newTask.taskID}, Name: {newTask.taskName}, List: {newTask.listName}, " +
-                                 $"Due to: {(newTask.dueDate != null ? newTask.dueDate : "End of time")}, isImportant: {newTask.isImportant}, " +
-                                 $"isDone: {newTask.isDone}}}");
+            Logging.Log($"Task saved. => {newTask}");
             // TODO: Call notification method on client (not implemented yet)
 
             await Clients.All.SendAsync("AddTask", JsonConvert.SerializeObject(newTask));
