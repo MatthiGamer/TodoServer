@@ -32,7 +32,7 @@ namespace TodoServer
 
             if (task == null)
             {
-                Logging.LogWarning($"TaskManagerWarning: Trying to delete task with id \"{taskID}\" but task couldn't be found.");
+                Logging.LogWarning("TaskManagerWarning", $"Trying to delete task with id \"{taskID}\" but task couldn't be found.");
                 return;
             }
 

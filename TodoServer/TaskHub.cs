@@ -66,7 +66,7 @@ namespace TodoApplication
 
             if (task == null)
             {
-                Logging.LogWarning("ServerWarning: Couldn't find task by id. Importance won't be changed.");
+                Logging.LogWarning("ServerWarning", "Couldn't find task by id. Importance won't be changed.");
                 return;
             }
 
@@ -87,7 +87,7 @@ namespace TodoApplication
 
             if (task == null)
             {
-                Logging.LogWarning("ServerWarning: Couldn't find task by id. Done status won't be changed.");
+                Logging.LogWarning("ServerWarning", "Couldn't find task by id. Done status won't be changed.");
                 return;
             }
 
@@ -108,7 +108,7 @@ namespace TodoApplication
 
             if (task == null)
             {
-                Logging.LogWarning("ServerWarning: Couldn't find task by id. Task won't be deleted.");
+                Logging.LogWarning("ServerWarning", "Couldn't find task by id. Task won't be deleted.");
                 return;
             }
 
