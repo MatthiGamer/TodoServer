@@ -29,7 +29,7 @@
             }
             catch (Exception exception)
             {
-                Logging.LogError("DateTypeConversionError", $"Couldn't convert string to DateType.\nError: {exception}");
+                Logging.LogError($"Couldn't convert string to DateType.\nError: {exception}", "DateTypeConversionError");
             }
             return dateType;
         }

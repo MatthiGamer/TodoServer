@@ -51,14 +51,14 @@ namespace TodoServer
                     }
                     catch (Exception exception)
                     {
-                        Logging.LogError(DATABASE_READER_ERROR_NAME, $"Error converting the values from the database.\nError: {exception.Message}");
+                        Logging.LogError($"Error converting the values from the database.\nError: {exception.Message}", DATABASE_READER_ERROR_NAME);
                         continue;
                     }
                 }
             }
             catch (Exception exception)
             {
-                Logging.LogError(DATABASE_READER_ERROR_NAME, $"Error reading the database.\nError: {exception.Message}");
+                Logging.LogError($"Error reading the database.\nError: {exception.Message}", DATABASE_READER_ERROR_NAME);
             }
 
             await connection.CloseAsync();
@@ -75,7 +75,7 @@ namespace TodoServer
             await using SQLiteCommand command = new SQLiteCommand(queryString, connection);
 
             int affectedRows = await command.ExecuteNonQueryAsync();
-            if (affectedRows != 1) Logging.LogWarning("DatabaseWarning", $"Saving affected {affectedRows} rows instead of one.");
+            if (affectedRows != 1) Logging.LogWarning($"Saving affected {affectedRows} rows instead of one.", "DatabaseWarning");
 
             await connection.CloseAsync();
         }
