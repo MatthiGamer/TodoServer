@@ -11,6 +11,18 @@ namespace TodoServerNUnitTests
         public const string TEST_TASK_NAME = "Task";
         public const string TEST_TASK_LIST = "Todo";
 
+        public const string TEST_LOG = "Test log";
+        public const string TEST_WARNING = "Test warning";
+        public const string TEST_ERROR = "Test error";
+
+        public const string TEST_LOG_NAME = "Info";
+        public const string TEST_WARNING_NAME = "TestWarning";
+        public const string TEST_ERROR_NAME = "TestError";
+
+        public const string TEST_DEFAULT_LOG_NAME = "Log";
+        public const string TEST_DEFAULT_WARNING_NAME = "Warning";
+        public const string TEST_DEFAULT_ERROR_NAME = "Error";
+
         // Date constants
         public const int TEST_DUE_DATE_DAY = 1;
         public const int TEST_DUE_DATE_DAY_TWO_DIGITS = 24;
