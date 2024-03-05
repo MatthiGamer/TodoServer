@@ -9,7 +9,6 @@ namespace TodoServerNUnitTests
         public void DatabaseSetup()
         {
             Assert.That(File.Exists(Path.GetFullPath(TestConstants.TEST_DB_PATH)), Is.True);
-            TestContext.WriteLine(Path.GetFullPath(TestConstants.TEST_DB_PATH));
         }
 
         [OneTimeTearDown]
