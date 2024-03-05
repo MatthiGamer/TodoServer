@@ -10,7 +10,7 @@ namespace TodoServer
 
         private const string DATABASE_READER_ERROR_NAME = "DatabaseReaderError";
 
-        public static async Task<List<TodoTask>> GetTasksFromDB()
+        public static async Task<List<TodoTask>> GetTasksFromDB(string connectionString = CONNECTION_STRING)
         {
             List<TodoTask> tasks = new List<TodoTask>();
 
@@ -23,7 +23,7 @@ namespace TodoServer
             bool isImportant = false;
             bool isDone = false;
 
-            await using SQLiteConnection connection = new SQLiteConnection(CONNECTION_STRING);
+            await using SQLiteConnection connection = new SQLiteConnection(connectionString);
             await connection.OpenAsync();
             await using SQLiteCommand command = new SQLiteCommand("SELECT * FROM Tasks", connection);
             try
@@ -65,17 +65,25 @@ namespace TodoServer
             return tasks;
         }
 
-        public static async void SaveTask(TodoTask task)
+        public static async Task SaveTask(TodoTask task, string connectionString = CONNECTION_STRING)
         {
             string valueString = $"'{task.taskID}', '{task.taskName}', '{task.listName}', {(task.dueDate != null ? $"'{task.dueDate}'" : "NULL")}, {BoolToInt(task.isImportant)}, {BoolToInt(task.isDone)}";
             string queryString = $"INSERT INTO Tasks (ID, Name, List, DueDate, IsImportant, IsDone) VALUES ({valueString})";
 
-            await using SQLiteConnection connection = new SQLiteConnection(CONNECTION_STRING);
+            await using SQLiteConnection connection = new SQLiteConnection(connectionString);
             await connection.OpenAsync();
             await using SQLiteCommand command = new SQLiteCommand(queryString, connection);
 
-            int affectedRows = await command.ExecuteNonQueryAsync();
-            if (affectedRows != 1) Logging.LogWarning($"Saving affected {affectedRows} rows instead of one.", "DatabaseWarning");
+            try
+            {
+                int affectedRows = await command.ExecuteNonQueryAsync();
+                if (affectedRows != 1) Logging.LogWarning($"Saving affected {affectedRows} rows instead of one.", "DatabaseWarning");
+            }
+            catch (Exception exception)
+            {
+                Logging.LogError($"Query couldn't be finished.\nError: {exception.Message}", "DatabaseError");
+            }
+            
 
             await connection.CloseAsync();
         }
