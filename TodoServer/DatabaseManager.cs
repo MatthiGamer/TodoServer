@@ -65,6 +65,52 @@ namespace TodoServer
             return tasks;
         }
 
+        public static async Task<TodoTask?> GetTaskByIdFromDB(string taskID, string connectionString = CONNECTION_STRING)
+        {
+            TodoTask? task = null;
+
+            await using SQLiteConnection connection = new SQLiteConnection(connectionString);
+            await connection.OpenAsync();
+            await using SQLiteCommand command = new SQLiteCommand($"SELECT * FROM Tasks WHERE ID = '{taskID}'", connection);
+
+            try
+            {
+                await using DbDataReader dataReader = await command.ExecuteReaderAsync();
+                bool hasFoundTask = await dataReader.ReadAsync();
+                if (!hasFoundTask)
+                {
+                    Logging.LogWarning("Task not found.", "DatabaseWarning");
+                    return null;
+                }
+
+                try
+                {
+                    string taskName = dataReader.GetString(1);
+                    string listName = dataReader.GetString(2);
+
+                    string? dueDateString = dataReader.IsDBNull(3) ? null : dataReader.GetString(3);
+
+                    bool isImportant = IntToBool(dataReader.GetInt32(4));
+                    bool isDone = IntToBool(dataReader.GetInt32(5));
+
+                    DateType? dueDate = DateType.GetDateTypeFromString(dueDateString);
+
+                    task = new TodoTask(taskID, taskName, listName, dueDate, isImportant, isDone);
+                }
+                catch (Exception exception)
+                {
+                    Logging.LogError($"Error converting the values from the database.\nError: {exception.Message}", DATABASE_READER_ERROR_NAME);
+                }
+            }
+            catch (Exception exception)
+            {
+                Logging.LogError($"Error reading the database.\nError: {exception.Message}", DATABASE_READER_ERROR_NAME);
+            }
+
+            await connection.CloseAsync();
+            return task;
+        }
+
         public static async Task SaveTask(TodoTask task, string connectionString = CONNECTION_STRING)
         {
             string valueString = $"'{task.taskID}', '{task.taskName}', '{task.listName}', {(task.dueDate != null ? $"'{task.dueDate}'" : "NULL")}, {BoolToInt(task.isImportant)}, {BoolToInt(task.isDone)}";
