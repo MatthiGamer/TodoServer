@@ -46,6 +46,20 @@ namespace TodoServerNUnitTests
         }
 
         [Test, Order(2)]
+        public async Task GetTaskByIdTest()
+        {
+            TodoTask? task = await DatabaseManager.GetTaskByIdFromDB(TestConstants.TEST_TASK_ID, TestConstants.TEST_DB_CONNECTION_STRING);
+            Assert.That(task, Is.Not.Null);
+
+            Assert.That(task.taskID, Is.EqualTo(TestConstants.TEST_TASK_ID));
+            Assert.That(task.taskName, Is.EqualTo(TestConstants.TEST_TASK_NAME));
+            Assert.That(task.listName, Is.EqualTo(TestConstants.TEST_TASK_LIST));
+            Assert.That(task.dueDate, Is.EqualTo(TestConstants.GetTestDateType()));
+            Assert.That(task.isImportant, Is.EqualTo(TestConstants.TEST_IS_IMPORTANT));
+            Assert.That(task.isDone, Is.EqualTo(TestConstants.TEST_IS_DONE));
+        }
+
+        [Test, Order(3)]
         public async Task LoadTasksTest()
         {
             List<TodoTask> tasks = await DatabaseManager.GetTasksFromDB(TestConstants.TEST_DB_CONNECTION_STRING);
