@@ -9,29 +9,37 @@ namespace TodoServerNUnitTests
         public void DatabaseSetup()
         {
             Assert.That(File.Exists(Path.GetFullPath(TestConstants.TEST_DB_PATH)), Is.True);
+            Assert.DoesNotThrowAsync(RemoveTestDataAsync);
+            Assert.DoesNotThrowAsync(SaveTask); // SaveTaskTest
+            RemoveTestDataSync();
         }
 
         [OneTimeTearDown]
         public void DatabaseCleanup()
         {
-            RemoveTestData();
+            RemoveTestDataSync();
         }
 
-        private async void RemoveTestData()
+        private async void RemoveTestDataSync()
+        {
+            await RemoveTestDataAsync();
+        }
+
+        private async Task RemoveTestDataAsync()
         {
             string queryString = $"DELETE FROM {TestConstants.TEST_DB_TABLE_NAME}";
 
             await using SQLiteConnection connection = new SQLiteConnection(TestConstants.TEST_DB_CONNECTION_STRING);
             await connection.OpenAsync();
             await using SQLiteCommand command = new SQLiteCommand(queryString, connection);
+            await command.ExecuteNonQueryAsync();
 
             await connection.CloseAsync();
         }
-
-        [Test, Order(1)]
-        public async Task SaveTaskTest()
+        
+        private async Task SaveTask()
         {
-            RemoveTestData();
+            await RemoveTestDataAsync();
 
             TodoTask task = new TodoTask(
                 TestConstants.TEST_TASK_ID,
@@ -45,9 +53,11 @@ namespace TodoServerNUnitTests
             await DatabaseManager.SaveTask(task, TestConstants.TEST_DB_CONNECTION_STRING);
         }
 
-        [Test, Order(2)]
+        [Test]
         public async Task GetTaskByIdTest()
         {
+            await SaveTask();
+
             TodoTask? task = await DatabaseManager.GetTaskByIdFromDB(TestConstants.TEST_TASK_ID, TestConstants.TEST_DB_CONNECTION_STRING);
             Assert.That(task, Is.Not.Null);
 
@@ -59,9 +69,11 @@ namespace TodoServerNUnitTests
             Assert.That(task.isDone, Is.EqualTo(TestConstants.TEST_IS_DONE));
         }
 
-        [Test, Order(3)]
+        [Test]
         public async Task LoadTasksTest()
         {
+            await SaveTask();
+
             List<TodoTask> tasks = await DatabaseManager.GetTasksFromDB(TestConstants.TEST_DB_CONNECTION_STRING);
             TodoTask savedTask = tasks.ToArray()[0];
 
