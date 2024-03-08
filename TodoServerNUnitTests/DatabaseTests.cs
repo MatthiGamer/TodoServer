@@ -70,6 +70,16 @@ namespace TodoServerNUnitTests
         }
 
         [Test]
+        public async Task DeleteTaskByIdTest()
+        {
+            await SaveTask();
+
+            await DatabaseManager.DeleteTaskByIdFromDB(TestConstants.TEST_TASK_ID, TestConstants.TEST_DB_CONNECTION_STRING);
+            TodoTask? task = await DatabaseManager.GetTaskByIdFromDB(TestConstants.TEST_TASK_ID, TestConstants.TEST_DB_CONNECTION_STRING);
+            Assert.That(task, Is.Null);
+        }
+
+        [Test]
         public async Task LoadTasksTest()
         {
             await SaveTask();
