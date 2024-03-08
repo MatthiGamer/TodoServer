@@ -6,16 +6,18 @@ namespace TodoServer
     {
         // Singleton instance
         private static TaskManager? instance = null;
-        private static List<TodoTask> tasks = new List<TodoTask>();
+        private List<TodoTask> tasks = new List<TodoTask>();
 
         // Hide constructor
         private TaskManager() { }
 
         public static TaskManager GetInstance()
         {
+            // Server started
             if (instance == null)
             {
                 instance = new TaskManager();
+                // instance.LoadTasksFromDB();
             }
 
             return instance;
@@ -24,6 +26,7 @@ namespace TodoServer
         public void SaveTask(TodoTask task)
         {
             tasks.Add(task);
+            // TODO: await DatabaseManager.SaveTask(task);
         }
 
         public void DeleteTask(string taskID)
@@ -37,6 +40,7 @@ namespace TodoServer
             }
 
             tasks.Remove(task);
+            // TODO: await DatabaseManager.DeleteTaskByIdFromDB(taskID);
         }
 
         /// <summary>
@@ -47,12 +51,19 @@ namespace TodoServer
 
         public TodoTask? GetTaskById(string taskID)
         {
+            // TODO: Rework this => Add dictionary (Dictionary<string, TodoTask>) for TaskManager
+            // TODO: task = await DatabaseManager.GetTaskByIdFromDB();
             foreach (TodoTask task in tasks)
             {
                 if (task.taskID == taskID) return task;
             }
 
             return null;
+        }
+
+        private async void LoadTasksFromDB()
+        {
+            this.tasks = await DatabaseManager.GetTasksFromDB();
         }
     }
 }
