@@ -30,7 +30,7 @@ namespace TodoServerNUnitTests
             );
 
             Assert.DoesNotThrow(() => TaskManager.GetInstance().SaveTask(task));
-            Assert.DoesNotThrow(() => TaskManager.GetInstance().DeleteTask(task.taskID));
+            Assert.DoesNotThrow(() => TaskManager.GetInstance().DeleteTaskById(task.taskID));
         }
     }
 }

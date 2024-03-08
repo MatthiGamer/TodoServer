@@ -110,7 +110,7 @@ namespace TodoApplication
                 return;
             }
 
-            TaskManager.GetInstance().DeleteTask(task.taskID);
+            TaskManager.GetInstance().DeleteTaskById(task.taskID);
 
             // TODO: Log deletion
             // TODO: Call notification method on client (not implemented yet)

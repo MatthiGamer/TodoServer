@@ -23,7 +23,7 @@ namespace TodoServerNUnitTests
         [TearDown]
         public void TearDown()
         {
-            Assert.DoesNotThrow(() => TaskManager.GetInstance().DeleteTask(TestConstants.TEST_TASK_ID));
+            Assert.DoesNotThrow(() => TaskManager.GetInstance().DeleteTaskById(TestConstants.TEST_TASK_ID));
         }
 
         [Test]
@@ -31,7 +31,7 @@ namespace TodoServerNUnitTests
         {
             TodoTask savedTask = GetSavedTask();
 
-            TaskManager.GetInstance().DeleteTask(savedTask.taskID);
+            TaskManager.GetInstance().DeleteTaskById(savedTask.taskID);
 
             string savedTasks = TaskManager.GetInstance().GetTasks();
             Assert.That(savedTasks, Is.EqualTo("[]"));

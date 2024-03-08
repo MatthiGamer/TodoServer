@@ -29,7 +29,7 @@ namespace TodoServer
             // TODO: await DatabaseManager.SaveTask(task);
         }
 
-        public void DeleteTask(string taskID)
+        public void DeleteTaskById(string taskID)
         {
             TodoTask? task = GetTaskById(taskID);
 
