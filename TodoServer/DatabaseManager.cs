@@ -10,6 +10,11 @@ namespace TodoServer
 
         private const string DATABASE_READER_ERROR_NAME = "DatabaseReaderError";
 
+        /// <summary>
+        /// Connects to the main database if no other connectionString is given and returns all tasks saved in it.
+        /// </summary>
+        /// <param name="connectionString">(Optional) Can be used to connect to a database other than TaskDB.db</param>
+        /// <returns>Returns a list of all saved tasks.</returns>
         public static async Task<List<TodoTask>> GetTasksFromDB(string connectionString = CONNECTION_STRING)
         {
             List<TodoTask> tasks = new List<TodoTask>();
@@ -65,6 +70,11 @@ namespace TodoServer
             return tasks;
         }
 
+        /// <summary>
+        /// Connects to the main database if no other connectionString is given and returns the task with <paramref name="taskID"/>.
+        /// </summary>
+        /// <param name="connectionString">(Optional) Can be used to connect to a database other than TaskDB.db</param>
+        /// <returns>Returns the task with the specified <paramref name="taskID"/> if it is found, otherwise <see langword="null"/>.</returns>
         public static async Task<TodoTask?> GetTaskByIdFromDB(string taskID, string connectionString = CONNECTION_STRING)
         {
             TodoTask? task = null;
@@ -111,6 +121,12 @@ namespace TodoServer
             return task;
         }
 
+        /// <summary>
+        /// Connects to the main database if no other connectionString is given and saves the specified task in it.
+        /// </summary>
+        /// <param name="task">The task that should be saved</param>
+        /// <param name="connectionString">(Optional) Can be used to connect to a database other than TaskDB.db</param>
+        /// <returns>Returns an awaitable task.</returns>
         public static async Task SaveTask(TodoTask task, string connectionString = CONNECTION_STRING)
         {
             string valueString = $"'{task.taskID}', '{task.taskName}', '{task.listName}', {(task.dueDate != null ? $"'{task.dueDate}'" : "NULL")}, {BoolToInt(task.isImportant)}, {BoolToInt(task.isDone)}";
