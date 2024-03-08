@@ -122,6 +122,30 @@ namespace TodoServer
         }
 
         /// <summary>
+        /// Connects to the main database if no other connectionString is given and deletes the task with <paramref name="taskID"/>.
+        /// </summary>
+        /// <param name="connectionString">(Optional) Can be used to connect to a database other than TaskDB.db</param>
+        /// <returns>Returns an awaitable task.</returns>
+        public static async Task DeleteTaskByIdFromDB(string taskID, string connectionString = CONNECTION_STRING)
+        {
+            await using SQLiteConnection connection = new SQLiteConnection(connectionString);
+            await connection.OpenAsync();
+            await using SQLiteCommand command = new SQLiteCommand($"DELETE FROM Tasks WHERE ID = '{taskID}'", connection);
+
+            try
+            {
+                int affectedRows = await command.ExecuteNonQueryAsync();
+                if (affectedRows != 1 && affectedRows != 0) Logging.LogWarning($"Deleting affected {affectedRows} rows instead of none or one.", "DatabaseWarning");
+            }
+            catch (Exception exception)
+            {
+                Logging.LogError($"Query couldn't be finished.\nError: {exception.Message}", "DatabaseError");
+            }
+
+            await connection.CloseAsync();
+        }
+
+        /// <summary>
         /// Connects to the main database if no other connectionString is given and saves the specified task in it.
         /// </summary>
         /// <param name="task">The task that should be saved</param>
