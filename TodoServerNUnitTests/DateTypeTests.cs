@@ -26,7 +26,9 @@ namespace TodoServerNUnitTests
         public void StringToDateTypeTest()
         {
             string testString = $"0{TestConstants.TEST_DUE_DATE_MONTH}/0{TestConstants.TEST_DUE_DATE_DAY}/{TestConstants.TEST_DUE_DATE_YEAR}";
-            DateType dateType = DateType.GetDateTypeFromString(testString);
+            DateType? dateType = DateType.GetDateTypeFromString(testString);
+
+            Assert.That(dateType, Is.Not.Null);
 
             Assert.That(dateType.day, Is.EqualTo(TestConstants.TEST_DUE_DATE_DAY));
             Assert.That(dateType.month, Is.EqualTo(TestConstants.TEST_DUE_DATE_MONTH));
@@ -34,6 +36,8 @@ namespace TodoServerNUnitTests
 
             testString = $"{TestConstants.TEST_DUE_DATE_MONTH_TWO_DIGITS}/{TestConstants.TEST_DUE_DATE_DAY_TWO_DIGITS}/{TestConstants.TEST_DUE_DATE_YEAR}";
             dateType = DateType.GetDateTypeFromString(testString);
+
+            Assert.That(dateType, Is.Not.Null);
 
             Assert.That(dateType.day, Is.EqualTo(TestConstants.TEST_DUE_DATE_DAY_TWO_DIGITS));
             Assert.That(dateType.month, Is.EqualTo(TestConstants.TEST_DUE_DATE_MONTH_TWO_DIGITS));

@@ -54,7 +54,7 @@ namespace TodoServerNUnitTests
         }
 
         [Test]
-        public async Task GetTaskByIdTest()
+        public async Task GetTaskByIdFromDBTest()
         {
             await SaveTask();
 
@@ -70,7 +70,7 @@ namespace TodoServerNUnitTests
         }
 
         [Test]
-        public async Task DeleteTaskByIdTest()
+        public async Task DeleteTaskByIdFromDBTest()
         {
             await SaveTask();
 
@@ -80,7 +80,7 @@ namespace TodoServerNUnitTests
         }
 
         [Test]
-        public async Task LoadTasksTest()
+        public async Task LoadTasksFromDBTest()
         {
             await SaveTask();
 
