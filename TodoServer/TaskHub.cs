@@ -42,7 +42,6 @@ namespace TodoApplication
             newTask = new TodoTask(taskID, taskName, listName, dueDate, isImportant, isDone);
             TaskManager.GetInstance().SaveTask(newTask);
 
-            // TODO: Log saving
             Logging.Log($"Task saved. => {newTask}");
             // TODO: Call notification method on client (not implemented yet)
 
